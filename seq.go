@@ -1,5 +1,7 @@
 // Package seq provides generic helpers for working with slices and other
-// sequences. It includes functions for mapping, filtering, grouping,
+// sequences. It includes several functions that are not included in the
+// standard library for working with slices which I have found helpful.
+// It includes functions for mapping, filtering, grouping,
 // chunking, de-duplicating, and computing aggregate values such as minima
 // and maxima.
 package seq

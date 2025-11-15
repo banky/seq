@@ -6,7 +6,7 @@
 import "github.com/banky/seq"
 ```
 
-Package seq provides generic helpers for working with slices and other sequences. It includes functions for mapping, filtering, grouping, chunking, de\-duplicating, and computing aggregate values such as minima and maxima.
+Package seq provides generic helpers for working with slices and other sequences. It includes several functions that are not included in the standard library for working with slices which I have found helpful. It includes functions for mapping, filtering, grouping, chunking, de\-duplicating, and computing aggregate values such as minima and maxima.
 
 ## Index
 
@@ -25,7 +25,7 @@ Package seq provides generic helpers for working with slices and other sequences
 
 
 <a name="Chunk"></a>
-## func [Chunk](<https://github.com/banky/seq/blob/main/seq.go#L221>)
+## func [Chunk](<https://github.com/banky/seq/blob/main/seq.go#L223>)
 
 ```go
 func Chunk[T any](slice []T, size int) [][]T
@@ -42,7 +42,7 @@ chunks := Chunk(values, 2)
 ```
 
 <a name="Filter"></a>
-## func [Filter](<https://github.com/banky/seq/blob/main/seq.go#L20>)
+## func [Filter](<https://github.com/banky/seq/blob/main/seq.go#L22>)
 
 ```go
 func Filter[T any](slice []T, keep func(T) bool) []T
@@ -59,7 +59,7 @@ evens := Filter(numbers, func(n int) bool { return n%2 == 0 })
 ```
 
 <a name="Flatten"></a>
-## func [Flatten](<https://github.com/banky/seq/blob/main/seq.go#L145>)
+## func [Flatten](<https://github.com/banky/seq/blob/main/seq.go#L147>)
 
 ```go
 func Flatten[T any](slices [][]T) []T
@@ -76,7 +76,7 @@ flat := Flatten(nested)
 ```
 
 <a name="GroupBy"></a>
-## func [GroupBy](<https://github.com/banky/seq/blob/main/seq.go#L127>)
+## func [GroupBy](<https://github.com/banky/seq/blob/main/seq.go#L129>)
 
 ```go
 func GroupBy[T any, K comparable](slice []T, keyFunc func(T) K) map[K][]T
@@ -95,7 +95,7 @@ byLen := GroupBy(words, func(s string) int { return len(s) })
 ```
 
 <a name="LastIndex"></a>
-## func [LastIndex](<https://github.com/banky/seq/blob/main/seq.go#L85>)
+## func [LastIndex](<https://github.com/banky/seq/blob/main/seq.go#L87>)
 
 ```go
 func LastIndex[T comparable](slice []T, v T) (idx int, ok bool)
@@ -115,7 +115,7 @@ _, ok = LastIndex(values, "z")
 ```
 
 <a name="Map"></a>
-## func [Map](<https://github.com/banky/seq/blob/main/seq.go#L40>)
+## func [Map](<https://github.com/banky/seq/blob/main/seq.go#L42>)
 
 ```go
 func Map[T any, R any](slice []T, f func(T) R) []R
@@ -134,7 +134,7 @@ strs := Map(numbers, func(n int) string {
 ```
 
 <a name="MinMax"></a>
-## func [MinMax](<https://github.com/banky/seq/blob/main/seq.go#L239>)
+## func [MinMax](<https://github.com/banky/seq/blob/main/seq.go#L241>)
 
 ```go
 func MinMax[T cmp.Ordered](slice []T) (min, max T)
@@ -152,7 +152,7 @@ min, max := MinMax(values)
 ```
 
 <a name="MinMaxFunc"></a>
-## func [MinMaxFunc](<https://github.com/banky/seq/blob/main/seq.go#L268>)
+## func [MinMaxFunc](<https://github.com/banky/seq/blob/main/seq.go#L270>)
 
 ```go
 func MinMaxFunc[T any](slice []T, less func(T, T) int) (min, max T)
@@ -184,7 +184,7 @@ min, max := MinMaxFunc(people, lessByAge)
 ```
 
 <a name="Partition"></a>
-## func [Partition](<https://github.com/banky/seq/blob/main/seq.go#L103>)
+## func [Partition](<https://github.com/banky/seq/blob/main/seq.go#L105>)
 
 ```go
 func Partition[T any](slice []T, pred func(T) bool) (matches, nonMatches []T)
@@ -202,7 +202,7 @@ evens, odds := Partition(numbers, func(n int) bool { return n%2 == 0 })
 ```
 
 <a name="Reduce"></a>
-## func [Reduce](<https://github.com/banky/seq/blob/main/seq.go#L66>)
+## func [Reduce](<https://github.com/banky/seq/blob/main/seq.go#L68>)
 
 ```go
 func Reduce[T any, R any](slice []T, init R, f func(R, T) R) R
@@ -231,7 +231,7 @@ joined := Reduce(words, "", func(acc, s string) string {
 ```
 
 <a name="Unique"></a>
-## func [Unique](<https://github.com/banky/seq/blob/main/seq.go#L161>)
+## func [Unique](<https://github.com/banky/seq/blob/main/seq.go#L163>)
 
 ```go
 func Unique[T comparable](slice []T) []T
@@ -248,7 +248,7 @@ uniq := Unique(values)
 ```
 
 <a name="UniqueBy"></a>
-## func [UniqueBy](<https://github.com/banky/seq/blob/main/seq.go#L197>)
+## func [UniqueBy](<https://github.com/banky/seq/blob/main/seq.go#L199>)
 
 ```go
 func UniqueBy[T any, K comparable](slice []T, keyFunc func(T) K) []T
