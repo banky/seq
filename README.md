@@ -25,7 +25,7 @@ Package seq provides generic helpers for working with slices and other sequences
 
 
 <a name="Chunk"></a>
-## func [Chunk](<https://github.com/banky/seq/blob/main/seq.go#L223>)
+## func [Chunk](<https://github.com/banky/seq/blob/main/seq.go#L132>)
 
 ```go
 func Chunk[T any](slice []T, size int) [][]T
@@ -33,16 +33,38 @@ func Chunk[T any](slice []T, size int) [][]T
 
 Chunk splits slice into consecutive sub\-slices of at most size elements. The final chunk may be smaller than size. The caller must ensure size \> 0.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	values := []int{1, 2, 3, 4, 5}
+	chunks := seq.Chunk(values, 2)
+	fmt.Println(chunks)
+}
+```
+
+#### Output
 
 ```
-values := []int{1, 2, 3, 4, 5}
-chunks := Chunk(values, 2)
-// chunks == [][]int{{1, 2}, {3, 4}, {5}}
+[[1 2] [3 4] [5]]
 ```
+
+</p>
+</details>
 
 <a name="Filter"></a>
-## func [Filter](<https://github.com/banky/seq/blob/main/seq.go#L22>)
+## func [Filter](<https://github.com/banky/seq/blob/main/seq.go#L16>)
 
 ```go
 func Filter[T any](slice []T, keep func(T) bool) []T
@@ -50,16 +72,38 @@ func Filter[T any](slice []T, keep func(T) bool) []T
 
 Filter returns a new slice containing only the elements of slice for which keep returns true.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	numbers := []int{1, 2, 3, 4, 5, 6}
+	evens := seq.Filter(numbers, func(n int) bool { return n%2 == 0 })
+	fmt.Println(evens)
+}
+```
+
+#### Output
 
 ```
-numbers := []int{1, 2, 3, 4, 5, 6}
-evens := Filter(numbers, func(n int) bool { return n%2 == 0 })
-// evens == []int{2, 4, 6}
+[2 4 6]
 ```
+
+</p>
+</details>
 
 <a name="Flatten"></a>
-## func [Flatten](<https://github.com/banky/seq/blob/main/seq.go#L147>)
+## func [Flatten](<https://github.com/banky/seq/blob/main/seq.go#L87>)
 
 ```go
 func Flatten[T any](slices [][]T) []T
@@ -67,16 +111,38 @@ func Flatten[T any](slices [][]T) []T
 
 Flatten returns a new slice containing all the elements of slices flattened into a single slice.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	nested := [][]int{{1, 2}, {}, {3}, {4, 5}}
+	flat := seq.Flatten(nested)
+	fmt.Println(flat)
+}
+```
+
+#### Output
 
 ```
-nested := [][]int{{1, 2}, {}, {3}, {4, 5}}
-flat := Flatten(nested)
-// flat == []int{1, 2, 3, 4, 5}
+[1 2 3 4 5]
 ```
+
+</p>
+</details>
 
 <a name="GroupBy"></a>
-## func [GroupBy](<https://github.com/banky/seq/blob/main/seq.go#L129>)
+## func [GroupBy](<https://github.com/banky/seq/blob/main/seq.go#L75>)
 
 ```go
 func GroupBy[T any, K comparable](slice []T, keyFunc func(T) K) map[K][]T
@@ -84,18 +150,44 @@ func GroupBy[T any, K comparable](slice []T, keyFunc func(T) K) map[K][]T
 
 GroupBy groups the elements of slice into a map keyed by the value returned from keyFunc for each element.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	words := []string{"a", "bb", "ccc", "dd", "e"}
+	byLen := seq.GroupBy(words, func(s string) int { return len(s) })
+
+	// Print groups in length order for stable output.
+	fmt.Println(byLen[1])
+	fmt.Println(byLen[2])
+	fmt.Println(byLen[3])
+}
+```
+
+#### Output
 
 ```
-words := []string{"a", "bb", "ccc", "dd"}
-byLen := GroupBy(words, func(s string) int { return len(s) })
-// byLen[1] == []string{"a"}
-// byLen[2] == []string{"bb", "dd"}
-// byLen[3] == []string{"ccc"}
+[a e]
+[bb dd]
+[ccc]
 ```
+
+</p>
+</details>
 
 <a name="LastIndex"></a>
-## func [LastIndex](<https://github.com/banky/seq/blob/main/seq.go#L87>)
+## func [LastIndex](<https://github.com/banky/seq/blob/main/seq.go#L48>)
 
 ```go
 func LastIndex[T comparable](slice []T, v T) (idx int, ok bool)
@@ -103,19 +195,42 @@ func LastIndex[T comparable](slice []T, v T) (idx int, ok bool)
 
 LastIndex returns the index of the last occurrence of v in slice. If v is not found, the returned index is \-1 and ok is false.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	values := []string{"a", "b", "c", "b"}
+	idx, ok := seq.LastIndex(values, "b")
+	fmt.Println(idx, ok)
+
+	_, ok = seq.LastIndex(values, "z")
+	fmt.Println(ok)
+}
+```
+
+#### Output
 
 ```
-values := []string{"a", "b", "c", "b"}
-idx, ok := LastIndex(values, "b")
-// idx == 3, ok == true
-
-_, ok = LastIndex(values, "z")
-// ok == false
+3 true
+false
 ```
+
+</p>
+</details>
 
 <a name="Map"></a>
-## func [Map](<https://github.com/banky/seq/blob/main/seq.go#L42>)
+## func [Map](<https://github.com/banky/seq/blob/main/seq.go#L28>)
 
 ```go
 func Map[T any, R any](slice []T, f func(T) R) []R
@@ -123,18 +238,38 @@ func Map[T any, R any](slice []T, f func(T) R) []R
 
 Map returns a new slice containing the results of applying f to each element of slice.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	numbers := []int{1, 2, 3}
+	strs := seq.Map(numbers, func(n int) string { return fmt.Sprintf("n=%d", n) })
+	fmt.Println(strs)
+}
+```
+
+#### Output
 
 ```
-numbers := []int{1, 2, 3}
-strs := Map(numbers, func(n int) string {
-	return fmt.Sprintf("n=%d", n)
-})
-// strs == []string{"n=1", "n=2", "n=3"}
+[n=1 n=2 n=3]
 ```
+
+</p>
+</details>
 
 <a name="MinMax"></a>
-## func [MinMax](<https://github.com/banky/seq/blob/main/seq.go#L241>)
+## func [MinMax](<https://github.com/banky/seq/blob/main/seq.go#L143>)
 
 ```go
 func MinMax[T cmp.Ordered](slice []T) (min, max T)
@@ -142,17 +277,38 @@ func MinMax[T cmp.Ordered](slice []T) (min, max T)
 
 MinMax returns the minimum and maximum values of slice. The caller must ensure that slice is non\-empty otherwise MinMax will panic.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	values := []int{5, 2, 9, 1}
+	min, max := seq.MinMax(values)
+	fmt.Println(min, max)
+}
+```
+
+#### Output
 
 ```
-values := []int{5, 2, 9, 1}
-min, max := MinMax(values)
-// min == 1
-// max == 9
+1 9
 ```
+
+</p>
+</details>
 
 <a name="MinMaxFunc"></a>
-## func [MinMaxFunc](<https://github.com/banky/seq/blob/main/seq.go#L270>)
+## func [MinMaxFunc](<https://github.com/banky/seq/blob/main/seq.go#L151>)
 
 ```go
 func MinMaxFunc[T any](slice []T, less func(T, T) int) (min, max T)
@@ -160,31 +316,64 @@ func MinMaxFunc[T any](slice []T, less func(T, T) int) (min, max T)
 
 MinMaxFunc returns the minimum and maximum values of slice using the comparison function less. The comparison function should return a negative value if a \< b, zero if a == b, and a positive value if a \> b. The caller must ensure that slice is non\-empty otherwise MinMaxFunc will panic.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	type Person struct {
+		Name string
+		Age  int
+	}
+
+	people := []Person{
+		{Name: "Alice", Age: 30},
+		{Name: "Bob", Age: 25},
+		{Name: "Charlie", Age: 40},
+	}
+
+	less := func(a, b Person) int {
+		return compare(a.Age, b.Age)
+	}
+
+	min, max := seq.MinMaxFunc(people, less)
+	fmt.Println(min, max)
+}
+
+// helper — replaces cmp.Compare but avoids extra imports
+func compare(a, b int) int {
+	switch {
+	case a < b:
+		return -1
+	case a > b:
+		return 1
+	default:
+		return 0
+	}
+}
+```
+
+#### Output
 
 ```
-type Person struct {
-	Name string
-	Age  int
-}
-
-people := []Person{
-	{Name: "Alice", Age: 30},
-	{Name: "Bob", Age: 25},
-	{Name: "Charlie", Age: 40},
-}
-
-lessByAge := func(a, b Person) int {
-	return cmp.Compare(a.Age, b.Age)
-}
-
-min, max := MinMaxFunc(people, lessByAge)
-// min == Person{Name: "Bob", Age: 25}
-// max == Person{Name: "Charlie", Age: 40}
+{Bob 25} {Charlie 40}
 ```
+
+</p>
+</details>
 
 <a name="Partition"></a>
-## func [Partition](<https://github.com/banky/seq/blob/main/seq.go#L105>)
+## func [Partition](<https://github.com/banky/seq/blob/main/seq.go#L59>)
 
 ```go
 func Partition[T any](slice []T, pred func(T) bool) (matches, nonMatches []T)
@@ -192,17 +381,38 @@ func Partition[T any](slice []T, pred func(T) bool) (matches, nonMatches []T)
 
 Partition splits slice into two slices: matches, containing elements for which pred returns true, and nonMatches, containing the rest.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	numbers := []int{1, 2, 3, 4, 5, 6}
+	evens, odds := seq.Partition(numbers, func(n int) bool { return n%2 == 0 })
+	fmt.Println(evens, odds)
+}
+```
+
+#### Output
 
 ```
-numbers := []int{1, 2, 3, 4, 5, 6}
-evens, odds := Partition(numbers, func(n int) bool { return n%2 == 0 })
-// evens == []int{2, 4, 6}
-// odds  == []int{1, 3, 5}
+[2 4 6] [1 3 5]
 ```
+
+</p>
+</details>
 
 <a name="Reduce"></a>
-## func [Reduce](<https://github.com/banky/seq/blob/main/seq.go#L68>)
+## func [Reduce](<https://github.com/banky/seq/blob/main/seq.go#L38>)
 
 ```go
 func Reduce[T any, R any](slice []T, init R, f func(R, T) R) R
@@ -210,28 +420,38 @@ func Reduce[T any, R any](slice []T, init R, f func(R, T) R) R
 
 Reduce applies f to each element of slice, accumulating the result, and returns the final accumulated value. The accumulator is initialized with init.
 
-Example \(sum\):
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	numbers := []int{1, 2, 3, 4}
+	sum := seq.Reduce(numbers, 0, func(acc, n int) int { return acc + n })
+	fmt.Println(sum)
+}
+```
+
+#### Output
 
 ```
-numbers := []int{1, 2, 3, 4}
-sum := Reduce(numbers, 0, func(acc, n int) int {
-	return acc + n
-})
-// sum == 10
+10
 ```
 
-Example \(concatenate\):
-
-```
-words := []string{"go", " ", "lang"}
-joined := Reduce(words, "", func(acc, s string) string {
-	return acc + s
-})
-// joined == "go lang"
-```
+</p>
+</details>
 
 <a name="Unique"></a>
-## func [Unique](<https://github.com/banky/seq/blob/main/seq.go#L163>)
+## func [Unique](<https://github.com/banky/seq/blob/main/seq.go#L97>)
 
 ```go
 func Unique[T comparable](slice []T) []T
@@ -239,16 +459,38 @@ func Unique[T comparable](slice []T) []T
 
 Unique returns a new slice containing only the unique elements of slice. The order of first occurrence is preserved.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	values := []int{1, 2, 1, 3, 2, 4, 4}
+	uniq := seq.Unique(values)
+	fmt.Println(uniq)
+}
+```
+
+#### Output
 
 ```
-values := []int{1, 2, 1, 3, 2, 4, 4}
-uniq := Unique(values)
-// uniq == []int{1, 2, 3, 4}
+[1 2 3 4]
 ```
+
+</p>
+</details>
 
 <a name="UniqueBy"></a>
-## func [UniqueBy](<https://github.com/banky/seq/blob/main/seq.go#L199>)
+## func [UniqueBy](<https://github.com/banky/seq/blob/main/seq.go#L114>)
 
 ```go
 func UniqueBy[T any, K comparable](slice []T, keyFunc func(T) K) []T
@@ -256,25 +498,44 @@ func UniqueBy[T any, K comparable](slice []T, keyFunc func(T) K) []T
 
 UniqueBy returns a new slice containing only the unique elements of slice, where uniqueness is determined by the key returned from keyFunc. The order of first occurrence \(by key\) is preserved.
 
-Example:
+<details><summary>Example</summary>
+<p>
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/banky/seq"
+)
+
+func main() {
+	type User struct {
+		Name  string
+		Email string
+	}
+
+	users := []User{
+		{Name: "Alice", Email: "a@example.com"},
+		{Name: "Bob", Email: "b@example.com"},
+		{Name: "Alice Clone", Email: "a@example.com"},
+	}
+
+	uniq := seq.UniqueBy(users, func(u User) string { return u.Email })
+	fmt.Println(uniq)
+}
+```
+
+#### Output
 
 ```
-type User struct {
-	Name  string
-	Email string
-}
-
-users := []User{
-	{Name: "Alice", Email: "a@example.com"},
-	{Name: "Bob", Email: "b@example.com"},
-	{Name: "Alice Clone", Email: "a@example.com"},
-}
-
-uniqByEmail := UniqueBy(users, func(u User) string { return u.Email })
-// uniqByEmail == []User{
-//   {Name: "Alice", Email: "a@example.com"},
-//   {Name: "Bob",   Email: "b@example.com"},
-// }
+[{Alice a@example.com} {Bob b@example.com}]
 ```
+
+</p>
+</details>
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
